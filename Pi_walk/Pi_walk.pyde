@@ -1,15 +1,32 @@
+'''
+In a random walk, the direction is chosen randomly. But this isn't a random walk, because the direction is chosen by pi.
+
+A starting central point is chosen, and then steps are made in a direction chosen by the next digit of Pi. 
+The directions are equally spaced around in a circle.
+
+There are a limited number of digits added to the code, but I could put more in a file and use those, I guess.
+'''
+
+# There are 10 possible directions, for each digit.
 n = 10
 directions = [i * 360.0 / n for i in range(n)]
 step = 10
 
+# Some digits of pi to work through.
 pi = "31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989"
 
 def setup():
     global x, y, c
+    
+    # Set up screen
     size(800, 800)
     background(0)
+    
+    # Start the walk at the screen centre
     x = width / 2
     y = height / 2
+    
+    # Use HSB mode for gradually changing colour
     colorMode(HSB, 100)
     c = 0
     stroke(c, 100, 100)
@@ -17,12 +34,14 @@ def setup():
 
 def draw():
     global x, y, c, pi
+    
+    # While there are still digits left
     if pi != "":
         angle = directions[int(pi[0])]
-        pi = pi[1:]
+        pi = pi[1:] # Remove the next digit
         newx = x + step * sin(radians(angle))
         newy = y - step * cos(radians(angle))
         line(x, y, newx, newy)
         x, y = newx, newy
-        c = (c + 0.1) % 100
+        c = (c + 0.1) % 100 # Change colour circularly
         stroke(c, 100, 100)
